@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[hexo博客下next主题的优化]]></title>
-    <url>%2Fhexo%2Fnext%2F</url>
-    <content type="text"></content>
+    <title><![CDATA[linux（centos7）下安装tomcat 安装tcp客户端]]></title>
+    <url>%2Flinux%2Flinux-tcp%2F</url>
+    <content type="text"><![CDATA[前言 本机安装linux虚拟机并配置tomcat，把tomcat设置为开机启动并注册服务，安装linux下的tcp客户端，实现文件上传设置tomcat内存大小 VM虚拟机下载地址链接: https://pan.baidu.com/s/15h8CAFk3uCMOxa-vKq-CsQ 提取码: rnue 解决黑屏修复LSP netsh winsock reset 设置网络 虚拟机选择NAT模式 根据VMnet8的子网地址设置IP地址 dns：8.8.8.8 在windos下的网卡VMnet8上也设置ip地址 ping www.baidu.com 查看是否能上网 安装tcp客户端12345678910111213141516171819202122232425262728# 安装客户端yum -y install vsftpd# 配置用户useradd -s /home/ftp ftpuserpasswd ftpusermkdir -p /var/home/ftp # 这个目录为存放文件的目录# 写配置cd /etc/vsftpd/cp vsftpd.conf vsftpd.conf.bakvim vsftpd.confanonymous_enable=NO # 禁止匿名用户登陆local_enable=YES # 激活chroot功能local_root=/var/home/ftp # ftp的文件目录# (default follows)chroot_list_file=/etc/vsftpd/chroot_list #这里存放着允许你指定的用户登陆的账号allow_writeable_chroot=YES # 允许锁定的用户有写的权限vim chroot_listteam1chmod -R o+w /var/home/ftp # 给这个目录授权给其他用户可以操作# 启动服务systemctl enable vsftpd systemctl start vsftpd systemctl status vsftpd 安装tomcat 到官网下载最新版本（不建议用yum安装） 解压到你喜欢的目录（比如/usr/tomcat） 设置为开机启动 tomcat目录/bin/catalina.sh 添加pid 1234# Copy CATALINA_BASE from CATALINA_HOME if not already set [ -z &quot;$CATALINA_BASE&quot; ] &amp;&amp; CATALINA_BASE=&quot;$CATALINA_HOME&quot; # 设置pid。一定要加在CATALINA_BASE定义后面，要不然pid会生成到/下面 CATALINA_PID=&quot;$CATALINA_BASE/tomcat.pid&quot; 创建tomcat.service文件 /usr/lib/systemd/system/tomcat.service 1234567891011121314151617[Unit] Description=Tomcat After=syslog.target network.target remote-fs.target nss-lookup.target [Service] Type=forking Environment=&quot;JAVA_HOME=/home/jdk/jdk1.7.0_79&quot; PIDFile=/home/tomcat/apache-tomcat-7.0.47/tomcat.pid ExecStart=/home/tomcat/apache-tomcat-7.0.47/bin/startup.sh ExecReload=/bin/kill -s HUP $MAINPID ExecStop=/bin/kill -s QUIT $MAINPID PrivateTmp=true [Install] WantedBy=multi-user.target 设置为开机启动 1systemctl enable tomcat.service 4.其他 12345678910111213141516171819202122232425262728#修改tomcat.service文件后需要执行下面命令使其生效：systemctl daemon-reload#查询tomcat 进程 ps -ef | grep &quot;tomcat&quot;| grep -v grep#如果多个tomcat，则拷贝到不同的目录，使用不同的端口。tomcat.service#文件名不同即可。#例如：tomcat1.service tomcat2.service tomcat3.service #启动tomcat服务systemctl start tomcat.service#设置开机自启动systemctl enable tomcat.service#停止开机自启动systemctl disable tomcat.service#查看服务当前状态systemctl status tomcat.service#重新启动服务systemctl restart tomcat.service#查看所有已启动的服务systemctl list-units --type=service 设置内存大小 创建tomcat目录/bin/setenv.sh 代码如下： 12345678[root@zm-centos7 zm]# vim /usr/local/tomcat/bin/setenv.sh # 创建setenv.sh脚本[root@zm-centos7 zm]# cat /usr/local/tomcat/bin/setenv.sh # 查看setenv.sh脚本内容export CATALINA_HOME=/usr/local/tomcatexport CATALINA_BASE=/usr/local/tomcat#设置Tomcat的PID文件CATALINA_PID=&quot;$CATALINA_BASE/tomcat.pid&quot;#添加JVM选项JAVA_OPTS=&quot;-server -XX:PermSize=256M -XX:MaxPermSize=1024m -Xms512M -Xmx1024M -XX:MaxNewSize=256m&quot; 参考文章]]></content>
       <categories>
-        <category>hexo</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
-        <tag>next</tag>
+        <tag>linux</tag>
+        <tag>tomcat</tag>
+        <tag>tcp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[windows下同一主机多个git ssh秘钥配置]]></title>
+    <url>%2Fgit%2Fssh%2F</url>
+    <content type="text"><![CDATA[前言 由于现在比较多git代码管理平台，国外的有github，国内的gitee和coding，上传代码又不想走https（需要验证身份），所以就想本机配置多个平台的ssh秘钥来上传代码。参考了一些文章及本人的不断测试搞定了，分享出来 windos下生成秘钥命令123ssh-keygen -t rsa -C 个人邮箱@qq.com -f &quot;id_rsa_github&quot;ssh-keygen -t rsa -C 个人邮箱@qq.com -f &quot;id_rsa_gitee&quot;ssh-keygen -t rsa -C 个人邮箱@qq.com -f &quot;id_rsa_coding&quot; 运行命令（以github为例） ssh保存到github/gitee/coding生成的文件在C:\Users\用户名下，我这里是中文路径，如图用记事本打开id_ras_github文件把内容粘贴进去，标题随意，保存。到这里远端就配好了，由于我这是中文用户目录，在git base测试会有乱码问题，所以要修改ssh文件的路径 新建存放ssh秘钥的文件夹我这里在C:\Users\git下把刚才的文件copy过来找到 C:\users\用户名对应的文件夹注意：如果用户名是中文，需要找到乱码后的文件夹，如下图（英文的忽略）在C:\Users\用户名\.ssh目录下新建config文件，填写123456789101112131415161718# 配置github.comHost github.com HostName github.com IdentityFile C:\\Users\\git\\id_rsa_github PreferredAuthentications publickey User username1# 配置git.oschina.net Host gitee.com HostName gitee.com IdentityFile C:\\Users\\git\\id_rsa_oschina PreferredAuthentications publickey User username2 # 配置git.dev.tencent.comHost git.dev.tencent.com HostName git.dev.tencent.com PreferredAuthentications publickey IdentityFile C:\\Users\\git\\id_rsa_coding 测试ssh是否可用运行命令1$ ssh -T git@github.com 出现如上类似的回应就表示配置成功！ 下载代码在github的项目里找到ssh的路径本地通过ssh下载代码即可：1git clone git@github.com:yigehui/blog.git]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>github</tag>
+        <tag>coding</tag>
+        <tag>码云</tag>
       </tags>
   </entry>
   <entry>
