@@ -39,11 +39,13 @@ NexT.utils = NexT.$u = {
   },
 
   lazyLoadPostsImages: function () {
-    $('#posts').find('img').lazyload({
-      //placeholder: '/images/loading.gif',
-      effect: 'fadeIn',
-      threshold : 0
-    });
+    $('img').lazyload({
+      placeholder: '/images/loading.gif',
+     effect: 'fadeIn',
+     threshold : 100,
+     failure_limit : 20,
+     skip_invisible : false
+   });
   },
 
   /**
