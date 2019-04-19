@@ -27,6 +27,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[hexo博客下next主题的优化（持续更新中。。）]]></title>
+    <url>%2Fhexo%2Fnext%2F</url>
+    <content type="text"><![CDATA[本文主要介绍关于next主题的优化，其中包括（基本配置、样式修改、seo优化、图片懒加载） hexo图片的懒加载找到themes\next\source\js\src\util.js用编辑器打开搜索lazyLoadPostsImages: function修改里面的函数1234567$(&apos;img&apos;).lazyload(&#123; placeholder: &apos;/images/loading.gif&apos;, effect: &apos;fadeIn&apos;, threshold : 100, failure_limit : 20, skip_invisible : false &#125;); 找到next主题的配置文件themes\next\_config.yml搜索关键字lazyload:修改为：12lazyload: enable: true 到此本地的就配好了，启动项目发现默认的loading图片太难看了，在网上找了替换一下。效果如下： 修改方式：找到\themes\next\source\images\下替换loading.gif图片即可。 注:文件名必须是loading.gif 这里分享个loading图片的网站，自行替换http://www.lanrentuku.com/gif/a/loading_2.html 只有文章页面能评论next添加评论功能后，大家会发现在所有的页面下都能评论，比如归档、分类、标签，这里把除去文章外的评论去掉。 找到themes\next\layout下的_layout.swig文件,查找1&#123;% include &apos;_partials/comments.swig&apos; %&#125; 替换为：123&#123;% if is_post() %&#125; &#123;% include &apos;_partials/comments.swig&apos; %&#125;&#123;% endif %&#125;]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[hexo + next 创建个人博客]]></title>
     <url>%2Fhexo%2Fhexo%2F</url>
     <content type="text"><![CDATA[前言 hexo是一个github上开源的博客系统，可以根据markdown的文档生成静态的html文件。只需要简单的命令就可以实现自动提交及部署到github的强大工具。hexo还提供了海量的主题风格供用户选择，本文讨论的是next主题的使用及优化。其他主题可以多看看官方文档https://hexo.io/themes/ 安装hexo 下载&amp;安装node.js 安装hexo 1$ npm install hexo-cli -g 注：由于npm是从国外下载资源，推荐使用cnpm淘宝镜像，安装后可以使用cnpm来替代所有的npm1$ npm install -g cnpm --registry=https://registry.npm.taobao.org 创建一个hexo 1$ hexo init blog 安装必要的插件 12$ cd blog$ npm install 启动hexo 1$ hexo server 以上就配置了一个简单的hexo项目 项目效果如下： 目录基本介绍新建完成后，指定文件夹的目录如下： 12345678.├── _config.yml├── package.json├── scaffolds├── source| ├── _drafts| └── _posts└── themes _config.yml网站的 配置 信息，您可以在此配置大部分的参数。 scaffolds模版 文件夹。当您新建文章时，Hexo 会根据 scaffold 来建立文件。 Hexo的模板是指在新建的markdown文件中默认填充的内容。例如，如果您修改scaffold/post.md中的Front-matter内容，那么每次新建一篇文章时都会包含这个修改。 source资源文件夹是存放用户资源的地方。除 _posts 文件夹之外，开头命名为 _ (下划线)的文件 / 文件夹和隐藏的文件将会被忽略。Markdown 和 HTML 文件会被解析并放到 public 文件夹，而其他文件会被拷贝过去。 themes主题 文件夹。Hexo 会根据主题来生成静态页面。 安装next主题这里是从github上下载next主题，这里需要本地安装有git，也可以去官网上下载到桌面解压到themes/下1$ git clone https://github.com/theme-next/hexo-theme-next themes / next 设置主题在hexo根目录下的配置文件config.yml里设置主题 1theme: next 输入命令：123$ hexo clean //清理缓存$ hexo g //重新生成博客代码$ hexo d //部署到本地 可以看到如下页面： 至此，一个简单的博客平台搭建完成 下篇文章来介绍next的主题优化及部署事宜 参考文献https://blog.csdn.net/qq_37210523/article/details/80909983https://hexo.io/zh-cn/docs/ 官方文档]]></content>
