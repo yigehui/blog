@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[常用命令汇总，持续更新中。。]]></title>
+    <url>%2Fgit%2Ftools%2F</url>
+    <content type="text"><![CDATA[前言 汇总java开发中使用的常用命令，主要包括oracle、eclipse、git、javascript、linux命令等等。持续更新 .gitignore忽略已有版本的文件/文件夹123git rm -r --cached .git add .git commit -m &quot;update .gitignore&quot; maven项目的.gitigonre文件123456789101112131415.DS_Storenode_modules/target/npm-debug.log*yarn-debug.log*yarn-error.log*# Editor directories and files.idea.vscode*.suo*.ntvs**.njsproj*.sln.settings git pull 撤销误操作1git reflog 1git reset --hard 3e7911db 通过以上两部，拉错了的代码就回到了之前的状态。把commit message写的清楚有意义，方便代码出错，回退。]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[使用js调用html()方法时，对html特殊字符的处理]]></title>
     <url>%2Fjs%2Fhtml-js-replace%2F</url>
     <content type="text"><![CDATA[前言 使用js的replace方法替换掉页面上取到的特殊字符例如’ “ &lt; &gt; &amp; 等html的特殊字符，防止出现sql注入或者xss攻击之类的安全隐患，同时不影响浏览器展示。 js代码如下：12345678910111213141516var entityMap = &#123; &apos;&amp;&apos;: &apos;&amp;amp;&apos;, &apos;&lt;&apos;: &apos;&amp;lt;&apos;, &apos;&gt;&apos;: &apos;&amp;gt;&apos;, &apos;&quot;&apos;: &apos;&amp;quot;&apos;, &quot;&apos;&quot;: &apos;&amp;#39;&apos;, &apos;/&apos;: &apos;&amp;#x2F;&apos;, &apos;`&apos;: &apos;&amp;#x60;&apos;, &apos;=&apos;: &apos;&amp;#x3D;&apos; &#125;; function escapeHtml (string) &#123; return String(string).replace(/[&amp;&lt;&gt;&quot;&apos;`=\/]/g, function (s) &#123; return entityMap[s]; &#125;); &#125; 防止用户在输入内容时，输入类似&quot;&lt;script&gt;alert(11)&lt;/script&gt;这样的代码时候，页面会把script代码插入到页面，有安全隐患]]></content>
